@@ -17,7 +17,9 @@ public class Firebolt implements Effect{
 
     @Override
     public void onTurnEnd(Dude effectTarget) {
-        effectTarget.setHealth(effectTarget.getHealth() - DAMAGE);
+        int currentHealth = effectTarget.getHealth();
+        effectTarget.setHealth(currentHealth - DAMAGE);
+        expired = true;
     }
 
     @Override

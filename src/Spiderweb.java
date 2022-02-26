@@ -11,12 +11,13 @@ public class Spiderweb implements Effect {
 
     @Override
     public void onTurnStart(Dude effectTarget) {
-        effectTarget.setActionPoints(effectTarget.getActionPoints() - REDUCE);
+        int currentPoints = effectTarget.getActionPoints();
+        effectTarget.setActionPoints(currentPoints - REDUCE);
     }
 
     @Override
     public void onTurnEnd(Dude effectTarget) {
-
+        expired = true;
     }
 
     @Override

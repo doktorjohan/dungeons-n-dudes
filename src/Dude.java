@@ -19,8 +19,9 @@ public abstract class Dude {
     abstract Effect chooseEffect();
 
     void takeTurn(Dude attackTarget) {
-        if (this.getActionPoints() < 30) {
-            this.setActionPoints(this.getActionPoints() + this.getActionPointsRefreshRate());
+        int currentActionPoints = this.getActionPoints();
+        if (currentActionPoints < 30) {
+            this.setActionPoints(currentActionPoints + this.getActionPointsRefreshRate());
         }
         for (Effect effectStart : this.currentlyActive) {
             if (!effectStart.isExpired()) {
@@ -28,16 +29,20 @@ public abstract class Dude {
             }
         }
 
-        Effect attackEffect = this.chooseEffect();
-        if ((Math.random() * 20) + this.getAccuracy() >= attackTarget.getArmor()) {
-            if (this.getActionPoints() >= attackEffect.requiredActionPoints()) {
-                attackEffect.onHit(attackTarget);
-                System.out.println("Attack hit!");
+        // iga käik ründab kolme efektiga
+        for (int i = 0; i < 2; i++) {
+
+            Effect attackEffect = this.chooseEffect();
+            if ((Math.random() * 20) + this.getAccuracy() >= attackTarget.getArmor()) {
+                if (this.getActionPoints() >= attackEffect.requiredActionPoints()) {
+                    attackEffect.onHit(attackTarget);
+                    System.out.println("Attack hit!");
+                } else {
+                    System.out.println("Not enough action points!");
+                }
             } else {
-                System.out.println("Not enough action points!");
+                System.out.println("Attack miss!");
             }
-        } else {
-            System.out.println("Attack miss!");
         }
 
         for (Effect effectEnd : this.currentlyActive) {
@@ -46,7 +51,7 @@ public abstract class Dude {
             }
         }
         this.currentlyActive.clear();
-    }
+}
 
     boolean isAlive() {
         return health > 0;

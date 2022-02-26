@@ -21,6 +21,7 @@ public class Knockdown implements Effect{
     @Override
     public void onTurnEnd(Dude effectTarget) {
         effectTarget.setActionPoints(previousPoints);
+        expired = true;
     }
 
     @Override
