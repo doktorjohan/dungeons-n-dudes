@@ -1,23 +1,25 @@
-public class Wizard extends Dude{
+import java.util.concurrent.ThreadLocalRandom;
 
-    Effect firebolt;
-    Effect spiderweb;
+public class Wizard extends Dude {
 
     public Wizard() {
-        super();
-        this.firebolt = new Firebolt();
-        this.spiderweb = new Spiderweb();
-        super.abilities = new Effect[]{firebolt, spiderweb};
-        super.setHealth(80);
-        super.setArmor(50);
-        super.setAccuracy(70);
-        super.setActionPointsRefreshRate(8);
+        setHealth(80);
+        setArmor(50);
+        setAccuracy(70);
+        setActionPointsRefreshRate(8);
     }
 
     @Override
     Effect chooseEffect() {
-        int choice = (int)(Math.random() * 2);
-        return abilities[choice];
+        int choice = ThreadLocalRandom.current().nextInt(2);
+        switch (choice) {
+            case 0:
+                return new Spiderweb();
+            case 1:
+                return new Firebolt();
+            default:
+                return null;
+        }
     }
 
 }

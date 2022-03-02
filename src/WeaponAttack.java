@@ -5,7 +5,8 @@ public class WeaponAttack implements Effect{
 
     @Override
     public void onHit(Dude effectTarget) {
-        effectTarget.setHealth(effectTarget.getHealth() - DAMAGE);
+        int currentHealth = effectTarget.getHealth();
+        effectTarget.setHealth(currentHealth - DAMAGE);
     }
 
     @Override
@@ -25,6 +26,6 @@ public class WeaponAttack implements Effect{
 
     @Override
     public boolean isExpired() {
-        return false;
+        return true;
     }
 }

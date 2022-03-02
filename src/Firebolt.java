@@ -6,7 +6,6 @@ public class Firebolt implements Effect{
 
     @Override
     public void onHit(Dude effectTarget) {
-        effectTarget.currentlyActive.add(this);
         expired = false;
     }
 

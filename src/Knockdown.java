@@ -9,7 +9,6 @@ public class Knockdown implements Effect{
     public void onHit(Dude effectTarget) {
         previousPoints = effectTarget.getActionPoints();
         effectTarget.setActionPoints(0);
-        effectTarget.currentlyActive.add(this);
         expired = false;
     }
 

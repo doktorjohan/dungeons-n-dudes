@@ -1,23 +1,25 @@
-public class Fighter extends Dude{
+import java.util.concurrent.ThreadLocalRandom;
 
-    Effect weaponattack;
-    Effect knockdown;
+public class Fighter extends Dude {
 
     public Fighter() {
-        super();
-        this.weaponattack = new WeaponAttack();
-        this.knockdown = new Knockdown();
-        super.abilities = new Effect[]{weaponattack, knockdown};
-        super.setHealth(120);
-        super.setArmor(80);
-        super.setAccuracy(50);
-        super.setActionPointsRefreshRate(5);
+        setHealth(120);
+        setArmor(80);
+        setAccuracy(50);
+        setActionPointsRefreshRate(5);
     }
 
     @Override
     Effect chooseEffect() {
-        int choice = (int)(Math.random() * 2);
-        return abilities[choice];
+        int choice = ThreadLocalRandom.current().nextInt(2);
+        switch (choice) {
+            case 0:
+                return new WeaponAttack();
+            case 1:
+                return new Knockdown();
+            default:
+                return null;
+        }
     }
 
 

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Dude {
 
@@ -9,7 +10,6 @@ public abstract class Dude {
     private int actionPoints;
     private int actionPointsRefreshRate;
     List<Effect> currentlyActive;
-    Effect[] abilities;
 
     public Dude() {
         this.currentlyActive = new ArrayList<>();
@@ -23,18 +23,16 @@ public abstract class Dude {
         if (currentActionPoints < 30) {
             this.setActionPoints(currentActionPoints + this.getActionPointsRefreshRate());
         }
-        for (Effect effectStart : this.currentlyActive) {
-            if (!effectStart.isExpired()) {
-                effectStart.onTurnStart(this);
-            }
-        }
+
+        this.currentlyActive.stream().filter(effect -> !effect.isExpired()).forEach(effect -> effect.onTurnStart(this));
 
         // iga käik ründab kolme efektiga
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
 
             Effect attackEffect = this.chooseEffect();
-            if ((Math.random() * 20) + this.getAccuracy() >= attackTarget.getArmor()) {
+            if (ThreadLocalRandom.current().nextInt(1, 21) + this.getAccuracy() >= attackTarget.getArmor()) {
                 if (this.getActionPoints() >= attackEffect.requiredActionPoints()) {
+                    attackTarget.currentlyActive.add(attackEffect);
                     attackEffect.onHit(attackTarget);
                     System.out.println("Attack hit!");
                 } else {
@@ -45,13 +43,11 @@ public abstract class Dude {
             }
         }
 
-        for (Effect effectEnd : this.currentlyActive) {
-            if (!effectEnd.isExpired()) {
-                effectEnd.onTurnEnd(this);
-            }
+        this.currentlyActive.stream().filter(effect -> !effect.isExpired()).forEach(effect -> effect.onTurnEnd(this));
+
+        this.currentlyActive.removeIf(Effect::isExpired);
         }
-        this.currentlyActive.clear();
-}
+
 
     boolean isAlive() {
         return health > 0;

@@ -3,10 +3,11 @@ public class Spiderweb implements Effect {
     private final int REDUCE  = 10;
     private final int REQUIRED_POINTS = 8;
     private boolean expired = false;
+    private int turnCounter;
 
     @Override
     public void onHit(Dude effectTarget) {
-        effectTarget.currentlyActive.add(this);
+        turnCounter = 2;
     }
 
     @Override
@@ -17,7 +18,8 @@ public class Spiderweb implements Effect {
 
     @Override
     public void onTurnEnd(Dude effectTarget) {
-        expired = true;
+        turnCounter--;
+        if (turnCounter == 0) {expired = true;}
     }
 
     @Override
